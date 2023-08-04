@@ -20,7 +20,7 @@ usb_mode_file=UDC
 
 changeUsbMode(){
     # if [[ $1 == "off" ]];then
-        echo "" > $gadget_path/$usb_mode_file
+        echo "" > $gadget_path/$usb_mode_file 
         sleep 3
     # else
         # echo "on"
@@ -36,7 +36,7 @@ changeUsbMode(){
 
 changeMassStorageMode(){
     if [[ $1 == "on" ]];then
-        ln -s $location_mass $gadget_path_config/$mass_storage_name 2> /dev/null
+        ln -s $location_mass $gadget_path_config 2> /dev/null
         echo "Mass storage is enabled"
     else 
         rm $gadget_path_config/$mass_storage_name 2> /dev/null
@@ -54,7 +54,7 @@ setCdrom(){
 }
 
 setFile(){
-    echo $1 > $location/file
+    echo $1 > $location/file 2> /dev/null
 }
 
 print(){

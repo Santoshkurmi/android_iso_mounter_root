@@ -10,3 +10,7 @@ to execute the script
 chmod +x mounter
 ./mounter file.iso
 ```
+make sure to run in su mode
+
+running may come some error like write error: no such device / resource buys.
+just ignore them,its common
