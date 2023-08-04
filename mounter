@@ -7,6 +7,7 @@ mass_storage_name=$(ls $location | grep mass_storage)  #find mass_storage.* fold
 
 location=$location/$mass_storage_name/lun.0  #find lun.0 file in mass_storage folder
 
+location_mass=$location/$mass_storage_name/lun.0  #find in mass_storage folder
 usb_controller=$(getprop sys.usb.controller)
 
 gadget_path=/config/usb_gadget/g1  #gadget path my be g1,g2,g3 in other phone model
@@ -25,19 +26,21 @@ changeUsbMode(){
         # echo "on"
         echo $usb_controller > $gadget_path/$usb_mode_file
         isEnabled=$(cat $gadget_path/$usb_mode_file)
-        if [[ $isEnabled == $usb_controller ]];then
-            echo "Mass storage is enabled"
-        else 
-            echo "Mass storage is disabled"
-        fi
-    # fi
+    #     if [[ $isEnabled == $usb_controller ]];then
+    #         echo "Mass storage is enabled"
+    #     else 
+    #         echo "Mass storage is disabled"
+    #     fi
+    # # fi
 }
 
 changeMassStorageMode(){
     if [[ $1 == "on" ]];then
-        ln -s $location $gadget_path_config/$mass_storage_name 2> /dev/null
+        ln -s $location_mass $gadget_path_config/$mass_storage_name 2> /dev/null
+        echo "Mass storage is enabled"
     else 
         rm $gadget_path_config/$mass_storage_name 2> /dev/null
+        echo "Mass storage is disabled"
     fi
 }
 
@@ -129,10 +132,11 @@ read(){
     off 
     ;;
     --help|-h) 
-    echo "boot read(0)|write(1)|floppy(2)   file.iso"
-    echo "boot  file.iso #for write default"
-    echo "example:  boot write /sdcard/ubuntu.iso"
-    echo "example:  boot  0 /sdcard/ubuntu.iso"
+    echo "./mounter  file.iso "
+    echo "./mounter read(0)|write(1)|floppy(2)   file.iso"
+    echo "./mounter  file.iso #for write default"
+    echo "example:  ./mounter write /sdcard/ubuntu.iso"
+    echo "example:  ./mounter  write /sdcard/ubuntu.iso"
     ;;
     *)
     read $1
