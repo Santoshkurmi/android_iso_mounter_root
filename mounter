@@ -37,6 +37,7 @@ changeUsbMode(){
 changeMassStorageMode(){
     if [[ $1 == "on" ]];then
         ln -s $location_mass $gadget_path_config 2> /dev/null
+        ln -s $location_mass $gadget_path_config/$mass_storage_name 2> /dev/null
         echo "Mass storage is enabled"
     else 
         rm $gadget_path_config/$mass_storage_name 2> /dev/null
@@ -112,7 +113,7 @@ read(){
         # setFile ""
         changeMassStorageMode off
         setprop sys.usb.config mtp
-        changeUsbMode
+        # changeUsbMode
   }
 
  execute(){
