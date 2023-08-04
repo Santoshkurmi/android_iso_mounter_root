@@ -56,7 +56,7 @@ setFile(){
 
 print(){
     msg=$(cat $location/$1)
-    echo "ISO=> "+$msg
+    echo "ISO=> "$msg
 }
 
 read(){
