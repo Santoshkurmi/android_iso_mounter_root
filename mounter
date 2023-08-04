@@ -7,7 +7,7 @@ mass_storage_name=$(ls $location | grep mass_storage)  #find mass_storage.* fold
 
 location=$location/$mass_storage_name/lun.0  #find lun.0 file in mass_storage folder
 
-location_mass=$location/$mass_storage_name/lun.0  #find in mass_storage folder
+location_mass=$location/$mass_storage_name  #find in mass_storage folder
 usb_controller=$(getprop sys.usb.controller)
 
 gadget_path=/config/usb_gadget/g1  #gadget path my be g1,g2,g3 in other phone model
