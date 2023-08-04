@@ -5,9 +5,9 @@ location=/config/usb_gadget/g1/functions/  #loc of usb_gadget functions folder
 
 mass_storage_name=$(ls $location | grep mass_storage)  #find mass_storage.* folder 
 
+location_mass=$location/$mass_storage_name  #find in mass_storage folder
 location=$location/$mass_storage_name/lun.0  #find lun.0 file in mass_storage folder
 
-location_mass=$location/$mass_storage_name  #find in mass_storage folder
 usb_controller=$(getprop sys.usb.controller)
 
 gadget_path=/config/usb_gadget/g1  #gadget path my be g1,g2,g3 in other phone model
@@ -20,23 +20,25 @@ usb_mode_file=UDC
 
 changeUsbMode(){
     # if [[ $1 == "off" ]];then
-        echo "" > $gadget_path/$usb_mode_file 
+        echo "" > $gadget_path/$usb_mode_file 2> /dev/null
         sleep 3
     # else
         # echo "on"
-        echo $usb_controller > $gadget_path/$usb_mode_file
+        echo $usb_controller > $gadget_path/$usb_mode_file 2> /dev/null
+
         isEnabled=$(cat $gadget_path/$usb_mode_file)
-    #     if [[ $isEnabled == $usb_controller ]];then
-    #         echo "Mass storage is enabled"
-    #     else 
-    #         echo "Mass storage is disabled"
-    #     fi
+
+        if [[ $isEnabled == $usb_controller ]];then
+            echo "USB is enabled"
+        else 
+            echo "USB is disabled,run the script again"
+        fi
     # # fi
 }
 
 changeMassStorageMode(){
     if [[ $1 == "on" ]];then
-        ln -s $location_mass $gadget_path_config 2> /dev/null
+        rm $gadget_path_config/$mass_storage_name 2> /dev/null
         ln -s $location_mass $gadget_path_config/$mass_storage_name 2> /dev/null
         echo "Mass storage is enabled"
     else 
@@ -51,7 +53,7 @@ setReadWrite(){
 
 
 setCdrom(){
-    echo $1 > $location/cdrom
+    echo $1 > $location/cdrom 2> /dev/null
 }
 
 setFile(){
@@ -72,7 +74,7 @@ read(){
         setCdrom 0
         setFile $1
         changeMassStorageMode on
-        setprop sys.usb.config mass_storage
+        # setprop sys.usb.config mass_storage
         changeUsbMode
         print file
     fi
@@ -87,7 +89,7 @@ read(){
         setCdrom 0
         setFile $1
         changeMassStorageMode on
-        setprop sys.usb.config mass_storage
+        # setprop sys.usb.config mass_storage
         changeUsbMode
         print file
     fi
@@ -101,7 +103,7 @@ read(){
         setCdrom 1
         setFile $1
         changeMassStorageMode on
-        setprop sys.usb.config mass_storage
+        # setprop sys.usb.config mass_storage
         changeUsbMode
         print file
     fi
@@ -112,7 +114,7 @@ read(){
         setCdrom 0
         # setFile ""
         changeMassStorageMode off
-        setprop sys.usb.config mtp
+        # setprop sys.usb.config mtp
         # changeUsbMode
   }
 
@@ -134,7 +136,7 @@ read(){
     ;;
     --help|-h) 
     echo "./mounter  file.iso "
-    echo "./mounter read(0)|write(1)|floppy(2)   file.iso"
+    # echo "./mounter read(0)|write(1)|floppy(2)   file.iso"
     echo "./mounter  file.iso #for write default"
     echo "example:  ./mounter write /sdcard/ubuntu.iso"
     echo "example:  ./mounter  write /sdcard/ubuntu.iso"
