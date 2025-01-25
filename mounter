@@ -116,7 +116,7 @@ read(){
         changeMassStorageMode off
         # setprop sys.usb.config mtp
         # changeUsbMode
-  
+  }
  execute(){
     file=$2
     case $1 in
